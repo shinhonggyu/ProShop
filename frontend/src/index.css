@@ -9,3 +9,24 @@ h3 {
 .rating span {
   margin: 0.1rem;
 }
+
+.likeButton {
+  background: transparent;
+  border: none;
+}
+
+.likeButton:focus {
+  outline: none;
+}
+
+.likeButton:active {
+  transform: translateY(2px);
+}
+
+.likeButton i {
+  font-size: 1.1rem;
+}
+
+.likeButton i:hover {
+  color: #3e8e41;
+}
