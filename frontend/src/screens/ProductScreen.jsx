@@ -7,6 +7,7 @@ import {
   Card,
   Button,
   Modal,
+  Form,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
@@ -16,6 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProductDetails } from '../actions/productActions';
 
 const ProductScreen = () => {
+  const [qty, setQty] = useState(1);
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -30,6 +33,10 @@ const ProductScreen = () => {
   useEffect(() => {
     dispatch(listProductDetails(id));
   }, [dispatch, id]);
+
+  const addToCartHandler = () => {
+    handleShow();
+  };
 
   return (
     <>
@@ -92,10 +99,34 @@ const ProductScreen = () => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
+
+                  {product.countInStock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Qty</Col>
+                        <Col>
+                          <Form.Control
+                            as="select"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
+                                <option key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
+
                   <ListGroup.Item>
                     <Button
                       variant="primary"
-                      onClick={handleShow}
+                      onClick={addToCartHandler}
                       className="btn-block"
                       type="button"
                       disabled={product.countInStock === 0}
@@ -112,7 +143,7 @@ const ProductScreen = () => {
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>상품이 장바구니에 담겼습니다🧡</Modal.Body>
             <Modal.Footer>
-              <Link to="/cart">장바구니 바로가기</Link>
+              <Link to={`/cart/${id}?qty=${qty}`}>장바구니 바로가기</Link>
             </Modal.Footer>
           </Modal>
         </>
