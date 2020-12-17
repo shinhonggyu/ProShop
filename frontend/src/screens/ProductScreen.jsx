@@ -15,6 +15,7 @@ import Message from '../components/Message';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProductDetails } from '../actions/productActions';
+import { addToCart } from '../actions/cartActions';
 
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
@@ -36,6 +37,7 @@ const ProductScreen = () => {
 
   const addToCartHandler = () => {
     handleShow();
+    dispatch(addToCart(id, qty));
   };
 
   return (
